@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"food-delivery/common"
 	"food-delivery/component/appctx"
+	"food-delivery/middleware"
 	"food-delivery/module/restaurant/transport/ginrestaurant"
 	"log"
 	"net/http"
@@ -53,14 +54,16 @@ func main() {
 
 	db = db.Debug()
 
+	appContext := appctx.NewAppContext(db)
+
 	r := gin.Default()
+	r.Use(middleware.Recover(appContext))
+
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(http.StatusOK, gin.H{
 			"message": "pong",
 		})
 	})
-
-	appContext := appctx.NewAppContext(db)
 
 	v1 := r.Group("/v1")
 	restaurants := v1.Group("/restaurants")

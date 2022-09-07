@@ -12,6 +12,8 @@ type Restaurant struct {
 	Addr            string `json:"addr" gorm:"column:addr;"`
 }
 
+const EntityName = "Restaurant"
+
 // trả về tên bảng trong DB
 func (Restaurant) TableName() string {
 	return "restaurants"
