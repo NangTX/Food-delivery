@@ -28,7 +28,9 @@ func CreateRestaurant(appCtx appctx.AppContext) func(c *gin.Context) {
 			panic(err)
 		}
 
-		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data))
+		data.Mask(false)
+
+		c.JSON(http.StatusOK, common.SimpleSuccessResponse(data.FakeId.String()))
 	}
 
 }

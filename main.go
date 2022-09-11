@@ -8,6 +8,7 @@ import (
 	"food-delivery/middleware"
 	"food-delivery/module/restaurant/transport/ginrestaurant"
 	"food-delivery/module/upload/transport/ginupload"
+	"food-delivery/module/user/transport/ginuser"
 	"log"
 	"net/http"
 	"os"
@@ -81,6 +82,8 @@ func main() {
 	v1 := r.Group("/v1")
 
 	v1.POST("/upload", ginupload.UploadImage(appContext))
+
+	v1.POST("/register", ginuser.Register(appContext))
 
 	restaurants := v1.Group("/restaurants")
 
