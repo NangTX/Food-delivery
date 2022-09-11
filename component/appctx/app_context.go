@@ -7,7 +7,7 @@ import (
 )
 
 type AppContext interface {
-	GetMaiDBConnection() *gorm.DB
+	GetMainDBConnection() *gorm.DB
 	UploadProvider() uploadprovider.UploadProvider
 }
 
@@ -20,5 +20,5 @@ func NewAppContext(db *gorm.DB, uploadProvider uploadprovider.UploadProvider) *a
 	return &appCtx{db: db, uploadProvider: uploadProvider}
 }
 
-func (ctx *appCtx) GetMaiDBConnection() *gorm.DB                  { return ctx.db }
+func (ctx *appCtx) GetMainDBConnection() *gorm.DB                 { return ctx.db }
 func (ctx *appCtx) UploadProvider() uploadprovider.UploadProvider { return ctx.uploadProvider }
