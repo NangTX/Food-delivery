@@ -56,6 +56,7 @@ func main() {
 	s3APIKey := os.Getenv("S3_API_KEY")
 	s3SecretKey := os.Getenv("S3_SECRET")
 	s3Domain := os.Getenv("S3_DOMAIN")
+	secretKey := os.Getenv("SYSTEM_SECRET")
 
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	if err != nil {
@@ -65,7 +66,7 @@ func main() {
 	db = db.Debug()
 	s3Provider := uploadprovider.NewS3Provider(s3BucketName, s3Region, s3APIKey, s3SecretKey, s3Domain)
 
-	appContext := appctx.NewAppContext(db, s3Provider)
+	appContext := appctx.NewAppContext(db, s3Provider, secretKey)
 
 	r := gin.Default()
 	r.Use(middleware.Recover(appContext))
@@ -84,6 +85,8 @@ func main() {
 	v1.POST("/upload", ginupload.UploadImage(appContext))
 
 	v1.POST("/register", ginuser.Register(appContext))
+	v1.POST("/authenticate", ginuser.Login(appContext))
+	v1.GET("/profile", middleware.RequiredAuth(appContext), ginuser.Profile(appContext))
 
 	restaurants := v1.Group("/restaurants")
 

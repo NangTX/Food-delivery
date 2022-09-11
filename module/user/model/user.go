@@ -9,6 +9,7 @@ const EntityName = "User"
 
 type User struct {
 	common.SQLModel `json:",inline"`
+	Id              int    `json:"id" gorm:"column:id;"`
 	Email           string `json:"email" gorm:"column:email;"`
 	Password        string `json:"-" gorm:"column:password;"`
 	Salt            string `json:"-" gorm:"column:salt;"`
@@ -37,6 +38,7 @@ func (User) TableName() string {
 
 type UserCreate struct {
 	common.SQLModel `json:",inline"`
+	Id              int           `json:"id" gorm:"column:id;"`
 	Email           string        `json:"email" gorm:"column:email;"`
 	Password        string        `json:"password" gorm:"column:password;"`
 	LastName        string        `json:"last_name" gorm:"column:last_name;"`

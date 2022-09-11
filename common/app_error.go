@@ -63,6 +63,10 @@ func ErrInvalidRequest(err error) *AppError {
 }
 
 func ErrInternal(err error) *AppError {
+	return NewErrorResponse(err, "user has been deleted or banned", err.Error(), "ErrInternal")
+}
+
+func ErrNoPermission(err error) *AppError {
 	return NewErrorResponse(err, "internal error", err.Error(), "ErrInternal")
 }
 
