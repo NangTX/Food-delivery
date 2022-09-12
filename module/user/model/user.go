@@ -20,9 +20,9 @@ type User struct {
 	// Avatar          *common.Image `json:"avatar,omitempty" gorm:"column:avatar;type:json"`
 }
 
-// func (u *User) GetUserId() int {
-// 	return u.Id
-// }
+func (u *User) GetUserId() int {
+	return u.Id
+}
 
 func (u *User) GetEmail() string {
 	return u.Email

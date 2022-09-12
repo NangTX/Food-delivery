@@ -17,11 +17,11 @@ const (
 // 	TopicUserDislikeRestaurant = "TopicUserDislikeRestaurant"
 // )
 
-// type Requester interface {
-// 	GetUserId() int
-// 	GetEmail() string
-// 	GetRole() string
-// }
+type Requester interface {
+	GetUserId() int
+	GetEmail() string
+	GetRole() string
+}
 
 func AppRecover() {
 	if err := recover(); err != nil {
