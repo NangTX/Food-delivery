@@ -17,9 +17,13 @@ func CreateRestaurant(appCtx appctx.AppContext) func(c *gin.Context) {
 
 		var data restaurantmodel.RestaurantCreate
 
+		requester := c.MustGet(common.CurrentUser).(common.Requester)
+
 		if err := c.ShouldBind(&data); err != nil {
 			panic(err)
 		}
+
+		data.UserId = requester.GetUserId()
 
 		store := restaurantstorage.NewSQLStore(db)
 		biz := restaurantbiz.NewCreateRestaurantBiz(store)

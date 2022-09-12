@@ -28,10 +28,10 @@ func (biz *listRestaurantBiz) ListRestaurant(context context.Context,
 	paging *common.Paging,
 ) ([]restaurantmodel.Restaurant, error) {
 
-	result, err := biz.store.ListDataWithCondition(context, filter, paging)
+	result, err := biz.store.ListDataWithCondition(context, filter, paging, "User")
 
 	if err != nil {
-		return nil, err
+		return nil, common.ErrCannotListEntity(restaurantmodel.EntityName, err)
 	}
 
 	return result, nil
