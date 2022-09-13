@@ -8,10 +8,14 @@ import (
 
 type Restaurant struct {
 	common.SQLModel `json:",inline"`
-	Name            string         `json:"name" gorm:"column:name;"`
-	Addr            string         `json:"addr" gorm:"column:addr;"`
-	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
-	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
+	Name            string             `json:"name" gorm:"column:name;"`
+	Id              int                `json:"-" gorm:"column:id;"`
+	Addr            string             `json:"addr" gorm:"column:addr;"`
+	Logo            *common.Image      `json:"logo" gorm:"column:logo;"`
+	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
+	UserId          int                `json:"-" gorm:"column:user_id;"`
+	User            *common.SimpleUser `json:"user" gorm:"preload:false;"`
+	LikedCount      int                `json:"like_count" gorm:"column:liked_count;"`
 }
 
 const EntityName = "Restaurant"
@@ -21,9 +25,18 @@ func (Restaurant) TableName() string {
 	return "restaurants"
 }
 
+func (r *Restaurant) Mask(isAdminOrOwner bool) {
+	r.GenUID(common.DbTypeRestaurant)
+
+	if u := r.User; u != nil {
+		u.Mask(isAdminOrOwner)
+	}
+}
+
 type RestaurantCreate struct {
 	common.SQLModel `json:",inline"`
 	Name            string         `json:"name" gorm:"column:name;"`
+	UserId          int            `json:"-" gorm:"column:user_id;"`
 	Addr            string         `json:"addr" gorm:"column:addr;"`
 	Logo            *common.Image  `json:"logo" gorm:"column:logo;"`
 	Cover           *common.Images `json:"cover" gorm:"column:cover;"`
@@ -33,8 +46,9 @@ func (RestaurantCreate) TableName() string {
 	return "restaurants"
 }
 
-func (r *Restaurant) Mask(isAdminOrOwner bool) {
-	r.GenUID(common.DbTypeRestaurant)
+func (data *RestaurantCreate) Mask(isAdminOrOwner bool) {
+	data.GenUID(common.DbTypeRestaurant)
+
 }
 
 func (data *RestaurantCreate) Validate() error {
@@ -45,10 +59,6 @@ func (data *RestaurantCreate) Validate() error {
 	}
 
 	return nil
-}
-
-func (r *RestaurantCreate) Mask(isAdminOrOwner bool) {
-	r.GenUID(common.DbTypeRestaurant)
 }
 
 type RestaurantUpdate struct {
