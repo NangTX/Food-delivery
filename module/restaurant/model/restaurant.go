@@ -15,7 +15,7 @@ type Restaurant struct {
 	Cover           *common.Images     `json:"cover" gorm:"column:cover;"`
 	UserId          int                `json:"-" gorm:"column:user_id;"`
 	User            *common.SimpleUser `json:"user" gorm:"preload:false;"`
-	LikeCount       int                `json:"like_count" gorm:"-"`
+	LikedCount      int                `json:"like_count" gorm:"column:liked_count;"`
 }
 
 const EntityName = "Restaurant"
